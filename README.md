@@ -1,0 +1,1 @@
+dotnet ef dbcontext scaffold "Server=SANDAR\MSSQLSERVER2022;Database=CarvedRock;User Id=name;Password=password;TrustServerCertificate=True;" Microsoft.EntityFrameworkCore.SqlServer -o Models -c AppDbContext -f
