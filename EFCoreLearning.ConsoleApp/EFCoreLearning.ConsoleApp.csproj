@@ -7,4 +7,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\EFCoreLearning.DataAccess\EFCoreLearning.DataAccess.csproj" />
+  </ItemGroup>
+
 </Project>
