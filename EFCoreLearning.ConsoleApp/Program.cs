@@ -11,5 +11,10 @@ var customers = _dbContext.Customers
     .OrderByDescending(c => c.Age)
     .ToList();
 
+foreach (var customer in customers)
+{
+    Console.WriteLine($" Customer Name: {customer.FirstName} {customer.LastName}, Age: {customer.Age}" );
+}
+
 Console.WriteLine("Press any key to exit");
 Console.Read();
