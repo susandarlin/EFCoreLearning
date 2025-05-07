@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Microsoft.EntityFrameworkCore;
 
 namespace EFCoreLearning.DataAccess.Models;
@@ -22,6 +23,18 @@ public partial class AppDbContext : DbContext
     public virtual DbSet<Customer> Customers { get; set; }
 
     public virtual DbSet<CustomerRank> CustomerRanks { get; set; }
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        if (!optionsBuilder.IsConfigured)
+        {
+            optionsBuilder
+                .LogTo(message => Debug.WriteLine(message))
+                .EnableSensitiveDataLogging();
+
+            optionsBuilder.UseSqlServer("Server=SANDAR\\MSSQLSERVER2022;Database=CarvedRock;Trusted_Connection=True;TrustServerCertificate=True;");
+        }
+    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
