@@ -7,11 +7,16 @@ var _dbContext = new AppDbContext();
 
 // Fetch all customers
 
-var customers = _dbContext.Customers
-    .OrderByDescending(c => c.Age)
-    .ToList();
+//var customers = _dbContext.Customers
+//    .OrderByDescending(c => c.Age)
+//    .ToList();
 
-foreach (var customer in customers)
+var customersQuerySyntax = from c in _dbContext.Customers
+                           orderby c.Age descending
+                           select c;
+
+
+foreach (var customer in customersQuerySyntax)
 {
     Console.WriteLine($" Customer Name: {customer.FirstName} {customer.LastName}, Age: {customer.Age}" );
 }
