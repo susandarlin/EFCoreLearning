@@ -25,5 +25,14 @@ foreach (var customer in getCustomersWithLimit)
     Console.WriteLine($" Customer Name: {customer.FirstName} {customer.LastName}, Age: {customer.Age}" );
 }
 
+var getAddressesByLimit = _dbContext.Addresses
+    .Take(2)
+    .AsNoTracking();
+
+foreach (var address in getAddressesByLimit)
+{
+    Console.WriteLine($" Address: {address.HseId}");
+}
+
 Console.WriteLine("Press any key to exit");
 Console.Read();
