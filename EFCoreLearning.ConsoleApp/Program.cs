@@ -42,8 +42,8 @@ var custommersWithInclude = _dbContext.Customers
 
 foreach (var customer in custommersWithInclude)
 {
-    Console.WriteLine(customer);
-    Console.WriteLine(customer.AddressCustomers.Select(ca => ca.Address));
+    Console.WriteLine(customer.FirstName);
+    Console.WriteLine(customer.AddressCustomers.Select(ca => ca.Address.HseId));
 }
 
 Console.WriteLine("Press any key to exit");

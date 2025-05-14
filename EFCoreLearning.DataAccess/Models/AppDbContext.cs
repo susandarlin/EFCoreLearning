@@ -38,6 +38,11 @@ public partial class AppDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<AddressCustomer>(entity =>
+        {
+            entity.HasKey(e => new { e.AddressId, e.CustomerId });
+        });
+
         modelBuilder.Entity<Address>(entity =>
         {
             entity.HasKey(e => e.HseId);
@@ -116,20 +121,20 @@ public partial class AppDbContext : DbContext
                 .HasColumnName("ZIP_CD");
         });
 
-        modelBuilder.Entity<AddressCustomer>(entity =>
-        {
-            entity.HasNoKey();
+        //modelBuilder.Entity<AddressCustomer>(entity =>
+        //{
+        //    entity.HasNoKey();
 
-            entity.HasIndex(e => e.CustomerId, "IX_AddressCustomers_CustomerId");
+        //    entity.HasIndex(e => e.CustomerId, "IX_AddressCustomers_CustomerId");
 
-            entity.Property(e => e.AddressId)
-                .HasMaxLength(50)
-                .IsUnicode(false);
+        //    entity.Property(e => e.AddressId)
+        //        .HasMaxLength(50)
+        //        .IsUnicode(false);
 
-            entity.HasOne(d => d.Address).WithMany().HasForeignKey(d => d.AddressId);
+        //    entity.HasOne(d => d.Address).WithMany().HasForeignKey(d => d.AddressId);
 
-            entity.HasOne(d => d.Customer).WithMany().HasForeignKey(d => d.CustomerId);
-        });
+        //    entity.HasOne(d => d.Customer).WithMany().HasForeignKey(d => d.CustomerId);
+        //});
 
         modelBuilder.Entity<Customer>(entity =>
         {
@@ -142,12 +147,4 @@ public partial class AppDbContext : DbContext
     }
 
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
-
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
-        modelBuilder.Entity<AddressCustomer>(entity =>
-        {
-            entity.HasKey(e => new { e.AddressId, e.CustomerId });
-        });
-    }
 }
