@@ -16,22 +16,34 @@ var _dbContext = new AppDbContext();
 //                           orderby c.Age descending
 //                           select c;
 
-var getCustomersWithLimit = _dbContext.Customers
-    .Take(1)
+//var getCustomersWithLimit = _dbContext.Customers
+//    .Take(1)
+//    .AsNoTracking();
+
+//foreach (var customer in getCustomersWithLimit)
+//{
+//    Console.WriteLine($" Customer Name: {customer.FirstName} {customer.LastName}, Age: {customer.Age}" );
+//}
+
+//var getAddressesByLimit = _dbContext.Addresses
+//    .Take(2)
+//    .AsNoTracking();
+
+//foreach (var address in getAddressesByLimit)
+//{
+//    Console.WriteLine($" Address: {address.HseId}");
+//}
+
+var custommersWithInclude = _dbContext.Customers
+    .Include(c => c.AddressCustomers)
+        .ThenInclude(ca => ca.Address)
+    .OrderByDescending(c => c.Age)
     .AsNoTracking();
 
-foreach (var customer in getCustomersWithLimit)
+foreach (var customer in custommersWithInclude)
 {
-    Console.WriteLine($" Customer Name: {customer.FirstName} {customer.LastName}, Age: {customer.Age}" );
-}
-
-var getAddressesByLimit = _dbContext.Addresses
-    .Take(2)
-    .AsNoTracking();
-
-foreach (var address in getAddressesByLimit)
-{
-    Console.WriteLine($" Address: {address.HseId}");
+    Console.WriteLine(customer);
+    Console.WriteLine(customer.AddressCustomers.Select(ca => ca.Address));
 }
 
 Console.WriteLine("Press any key to exit");

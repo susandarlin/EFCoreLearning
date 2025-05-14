@@ -16,4 +16,6 @@ public partial class Customer
     public int CustomerRankId { get; set; }
 
     public virtual CustomerRank CustomerRank { get; set; } = null!;
+
+    public virtual ICollection<AddressCustomer> AddressCustomers { get; set; }
 }

@@ -142,4 +142,12 @@ public partial class AppDbContext : DbContext
     }
 
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<AddressCustomer>(entity =>
+        {
+            entity.HasKey(e => new { e.AddressId, e.CustomerId });
+        });
+    }
 }
