@@ -34,17 +34,29 @@ var _dbContext = new AppDbContext();
 //    Console.WriteLine($" Address: {address.HseId}");
 //}
 
-var custommersWithInclude = _dbContext.Customers
+//var custommersWithInclude = _dbContext.Customers
+//    .Include(c => c.AddressCustomers)
+//        .ThenInclude(ca => ca.Address)
+//    .OrderByDescending(c => c.Age)
+//    .AsNoTracking();
+
+//foreach (var customer in custommersWithInclude)
+//{
+//    Console.WriteLine(customer.FirstName);
+//    Console.WriteLine(string.Join(", ", customer.AddressCustomers.Select(ca => ca.AddressId)));
+//}
+
+var AddressCustomers = _dbContext.Customers.AsNoTracking()
     .Include(c => c.AddressCustomers)
         .ThenInclude(ca => ca.Address)
-    .OrderByDescending(c => c.Age)
-    .AsNoTracking();
+    .SelectMany(c => c.AddressCustomers)
+    .ToList();
 
-foreach (var customer in custommersWithInclude)
+foreach (var addressCustomer in AddressCustomers)
 {
-    Console.WriteLine(customer.FirstName);
-    Console.WriteLine(string.Join(", ", customer.AddressCustomers.Select(ca => ca.AddressId)));
+    Console.WriteLine(addressCustomer.Address.HseId);
 }
+
 
 Console.WriteLine("Press any key to exit");
 Console.Read();
