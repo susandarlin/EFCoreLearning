@@ -46,17 +46,34 @@ var _dbContext = new AppDbContext();
 //    Console.WriteLine(string.Join(", ", customer.AddressCustomers.Select(ca => ca.AddressId)));
 //}
 
-var AddressCustomers = _dbContext.Customers.AsNoTracking()
+// Simple SelectMany
+//var AddressCustomers = _dbContext.Customers.AsNoTracking()
+//    .Include(c => c.AddressCustomers)
+//        .ThenInclude(ca => ca.Address)
+//    .SelectMany(c => c.AddressCustomers)
+//    .ToList();
+
+//foreach (var addressCustomer in AddressCustomers)
+//{
+//    Console.WriteLine(addressCustomer.Address.HseId);
+//}
+
+// SelectMany with projection
+
+var customerAddressData = _dbContext.Customers.AsNoTracking()
     .Include(c => c.AddressCustomers)
-        .ThenInclude(ca => ca.Address)
-    .SelectMany(c => c.AddressCustomers)
-    .ToList();
+            .ThenInclude(ca => ca.Address)
+    .SelectMany(c => c.AddressCustomers, (customer, customerAddress) => new
+    {
+        FirstName = customer.FirstName,
+        LastName = customer.LastName,
+        addressName = customerAddress.Address.HseId
+    });
 
-foreach (var addressCustomer in AddressCustomers)
+foreach (var customerAddress in customerAddressData)
 {
-    Console.WriteLine(addressCustomer.Address.HseId);
+    Console.WriteLine(customerAddress);
 }
-
 
 Console.WriteLine("Press any key to exit");
 Console.Read();
