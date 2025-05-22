@@ -60,19 +60,32 @@ var _dbContext = new AppDbContext();
 
 // SelectMany with projection
 
-var customerAddressData = _dbContext.Customers.AsNoTracking()
-    .Include(c => c.AddressCustomers)
-            .ThenInclude(ca => ca.Address)
-    .SelectMany(c => c.AddressCustomers, (customer, customerAddress) => new
-    {
-        FirstName = customer.FirstName,
-        LastName = customer.LastName,
-        addressName = customerAddress.Address.HseId
-    });
+//var customerAddressData = _dbContext.Customers.AsNoTracking()
+//    .Include(c => c.AddressCustomers)
+//            .ThenInclude(ca => ca.Address)
+//    .SelectMany(c => c.AddressCustomers, (customer, customerAddress) => new
+//    {
+//        FirstName = customer.FirstName,
+//        LastName = customer.LastName,
+//        addressName = customerAddress.Address.HseId
+//    });
 
-foreach (var customerAddress in customerAddressData)
+//foreach (var customerAddress in customerAddressData)
+//{
+//    Console.WriteLine(customerAddress);
+//}
+
+// SelectMany with projection and distinct
+
+var distinctZipCode = _dbContext.Customers.AsNoTracking()
+    .Include(c=> c.AddressCustomers)
+        .ThenInclude(ca => ca.Address)
+    .SelectMany(c=>c.AddressCustomers.Select(a=> a.Address.ZipCd))
+    .Distinct();
+
+foreach (var zipCode in distinctZipCode)
 {
-    Console.WriteLine(customerAddress);
+    Console.WriteLine(zipCode);
 }
 
 Console.WriteLine("Press any key to exit");
